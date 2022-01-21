@@ -1,0 +1,32 @@
+name: Update formula on release
+
+on:
+  repository_dispatch:
+    types: [release]
+
+  workflow_dispatch:
+    inputs:
+      test_tag:
+        description: "Tag to test version bump"
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: echo envs
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Generate sha256
+        env:
+          TAG: ${{ github.event.client_payload.tag }}
+        run: |
+          SHA256=`curl -s https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/2.2.0.tar.gz |\
+          sha256sum |\
+          awk '{print $1}'`
+          echo ::set-output name=sha256::${SHA256}
+          echo $SHA256
