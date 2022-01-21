@@ -42,9 +42,9 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          title: ${{ github.event.client_payload.tag }} Formula Version Bump
-          body: Bumping version from upstream release\nhttps://github.com/XCTestHTMLReport/XCTestHTMLReport/releases/tag/${{ github.event.client_payload.tag }}
-          commit-message: ${{ github.event.client_payload.tag }} formula version bump
-          branch: formula-bump/${{ github.event.client_payload.tag }}
+          title: "${{ github.event.client_payload.tag }} Formula Version Bump"
+          body: "Bumping version from upstream release\nhttps://github.com/XCTestHTMLReport/XCTestHTMLReport/releases/tag/${{ github.event.client_payload.tag }}"
+          commit-message: "${{ github.event.client_payload.tag }} formula version bump"
+          branch: "formula-bump/${{ github.event.client_payload.tag }}"
           add-paths: xchtmlreport.rb
           reviewers: tylervick
