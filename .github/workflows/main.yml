@@ -6,8 +6,8 @@ on:
 
   workflow_dispatch:
     inputs:
-      test_tag:
-        description: "Tag to test version bump"
+      tag:
+        description: "Tag to version bump"
         required: true
 
 jobs:
