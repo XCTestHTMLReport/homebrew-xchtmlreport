@@ -1,0 +1,18 @@
+class Xchtmlreport < Formula
+  desc "XCTestHTMLReport: Xcode-like HTML report for Unit and UI Tests"
+  homepage "https://github.com/XCTestHTMLReport/XCTestHTMLReport"
+  url "https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/{{ TAG }}.tar.gz"
+  sha256 "{{ SHA256 }}"
+  license "MIT"
+  head "https://github.com/XCTestHTMLReport/XCTestHTMLReport.git", :branch => "main"
+
+  def install
+    system "swift build --disable-sandbox -c release"
+    bin.install ".build/release/xchtmlreport"
+  end
+
+  test do
+    system "./prepareTestResults.sh"
+    system "swift test -v"
+  end
+end
