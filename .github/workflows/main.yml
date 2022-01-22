@@ -6,8 +6,8 @@ on:
 
   workflow_dispatch:
     inputs:
-      test_tag:
-        description: "Tag to test version bump"
+      tag:
+        description: "Tag to version bump"
         required: true
 
 jobs:
@@ -22,11 +22,31 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
 
       - name: Generate sha256
+        id: sha
         env:
           TAG: ${{ github.event.client_payload.tag }}
         run: |
-          SHA256=`curl -s https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/2.2.0.tar.gz |\
+          SHA256=`curl -s https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
           sha256sum |\
           awk '{print $1}'`
           echo ::set-output name=sha256::${SHA256}
           echo $SHA256
+
+      - name: Template substitution
+        env:
+          TAG: ${{ github.event.client_payload.tag }}
+          SHA256: ${{ steps.sha.outputs.sha256 }}
+        run: |
+          sed -e "s:{{ TAG }}:$TAG:g" -e "s:{{ SHA256 }}:$SHA256:g" xchtmlreport.rb.tmpl > xchtmlreport.rb
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        env:
+          TAG: ${{ github.event.client_payload.tag }}
+        with:
+          title: "${{ env.TAG }} Formula Version Bump"
+          body: "Bumping version from upstream release\nhttps://github.com/XCTestHTMLReport/XCTestHTMLReport/releases/tag/${{ env.TAG }}"
+          commit-message: "${{ env.TAG }} formula version bump"
+          branch: "formula-bump/${{ env.TAG }}"
+          add-paths: xchtmlreport.rb
+          reviewers: tylervick
