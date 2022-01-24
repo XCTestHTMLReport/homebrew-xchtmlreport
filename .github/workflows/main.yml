@@ -24,7 +24,7 @@ jobs:
         ls -d "$PWD/"*
         #brew install coreutils
         #PATH=`realpath ${TAG}.tar.gz`
-        #mkdir -p ${{ github.workspace }}/artifacts
+        mkdir -p "${{ github.workspace }}/artifacts"
         cp "${TAG}.tar.gz" "${{ github.workspace }}/artifacts/"
         echo ::set-output name=path::${PATH}
         echo ::set-output name=sha256::${SHASUM}
