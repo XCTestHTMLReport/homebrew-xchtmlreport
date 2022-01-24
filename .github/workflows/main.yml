@@ -21,7 +21,7 @@ jobs:
         #awk '{print $1}'`
         SHASUM=`shasum -a 256 ./2.2.1.tar.gz | awk '{print $1}'`
         echo $SHASUM
-        ls -d "$PWD/"*
+        ls -dlaSh "$PWD/"*
         #brew install coreutils
         #PATH=`realpath ${TAG}.tar.gz`
         mkdir -p "${{ github.workspace }}/artifacts"
