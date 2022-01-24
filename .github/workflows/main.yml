@@ -17,7 +17,7 @@ jobs:
         run: |
           brew install coreutils
           SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
-          sha256sum |\
+          shasum -a 256 |\
           awk '{print $1}'`
           echo ::set-output name=sha256::${SHA256}
 
