@@ -48,4 +48,4 @@ jobs:
         TAG: ${{ github.event.client_payload.tag }}
       with:
         name: tar
-        path: ./${TAG}.tar.gz
+        path: ./2.2.1.tar.gz
