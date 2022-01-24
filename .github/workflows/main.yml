@@ -8,36 +8,44 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Generate sha256
-        id: sha
-        env:
-          TAG: ${{ github.event.client_payload.tag }}
-        run: |
-          curl -f https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz -O
-          #SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
-          #shasum -a 256 |\
-          #awk '{print $1}'`
-          SHASUM=`shasum -a 256 ./2.2.1.tar.gz | awk '{print $1}'`
-          echo $SHASUM
-          echo ::set-output name=sha256::${SHASUM}
+    - name: Generate sha256
+      id: sha
+      env:
+        TAG: ${{ github.event.client_payload.tag }}
+      run: |
+        curl -f https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz -O
+        #SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
+        #shasum -a 256 |\
+        #awk '{print $1}'`
+        SHASUM=`shasum -a 256 ./2.2.1.tar.gz | awk '{print $1}'`
+        echo $SHASUM
+        echo ::set-output name=sha256::${SHASUM}
 
-      - name: Template substitution
-        env:
-          TAG: ${{ github.event.client_payload.tag }}
-          SHA256: ${{ steps.sha.outputs.sha256 }}
-        run: |
-          sed -e "s:{{ TAG }}:$TAG:g" -e "s:{{ SHA256 }}:$SHA256:g" xchtmlreport.rb.tmpl > xchtmlreport.rb
+    - name: Template substitution
+      env:
+        TAG: ${{ github.event.client_payload.tag }}
+        SHA256: ${{ steps.sha.outputs.sha256 }}
+      run: |
+        sed -e "s:{{ TAG }}:$TAG:g" -e "s:{{ SHA256 }}:$SHA256:g" xchtmlreport.rb.tmpl > xchtmlreport.rb
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        env:
-          TAG: ${{ github.event.client_payload.tag }}
-        with:
-          title: "${{ env.TAG }} Formula Version Bump"
-          body: "Bumping version from upstream release\nhttps://github.com/XCTestHTMLReport/XCTestHTMLReport/releases/tag/${{ env.TAG }}"
-          commit-message: "${{ env.TAG }} formula version bump"
-          branch: "formula-bump/${{ env.TAG }}"
-          add-paths: xchtmlreport.rb
-          reviewers: tylervick
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v3
+      env:
+        TAG: ${{ github.event.client_payload.tag }}
+      with:
+        title: "${{ env.TAG }} Formula Version Bump"
+        body: "Bumping version from upstream release\nhttps://github.com/XCTestHTMLReport/XCTestHTMLReport/releases/tag/${{ env.TAG }}"
+        commit-message: "${{ env.TAG }} formula version bump"
+        branch: "formula-bump/${{ env.TAG }}"
+        add-paths: xchtmlreport.rb
+        reviewers: tylervick
+
+    - name: Archive
+      uses: actions/upload-artifact@v2
+      env:
+        TAG: ${{ github.event.client_payload.tag }}
+      with:
+        name: tar
+        path: ./${TAG}.tar.gz
