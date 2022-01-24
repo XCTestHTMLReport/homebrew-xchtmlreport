@@ -24,6 +24,8 @@ jobs:
         ls -d "$PWD/"*
         brew install coreutils
         PATH=`realpath ${TAG}.tar.gz`
+        mkdir -p ${{ github.workspace }}/artifacts
+        cp ${TAG}.tar.gz ${{ github.workspace }}/artifacts/
         echo ::set-output name=path::${PATH}
         echo ::set-output name=sha256::${SHASUM}
 
@@ -48,8 +50,6 @@ jobs:
 
     - name: Archive
       uses: actions/upload-artifact@v2
-      env:
-        TAG: ${{ github.event.client_payload.tag }}
       with:
         name: tar
-        path: ${{ steps.sha.outputs.path }}
+        path: ${{ github.workspace }}/artifacts/
