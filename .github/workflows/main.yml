@@ -21,8 +21,9 @@ jobs:
         #awk '{print $1}'`
         SHASUM=`shasum -a 256 ./2.2.1.tar.gz | awk '{print $1}'`
         echo $SHASUM
-        PATH=`realpath ${TAG}.tar.gz`
         ls -d "$PWD/"*
+        brew install coreutils
+        PATH=`realpath ${TAG}.tar.gz`
         echo ::set-output name=path::${PATH}
         echo ::set-output name=sha256::${SHASUM}
 
