@@ -19,7 +19,7 @@ jobs:
           #SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
           #shasum -a 256 |\
           #awk '{print $1}'`
-          SHASUM=`shasum -a 256 ~/Desktop/2.2.1.tar.gz | awk '{print $1}'`
+          SHASUM=`shasum -a 256 ./2.2.1.tar.gz | awk '{print $1}'`
           echo $SHASUM
           echo ::set-output name=sha256::${SHASUM}
 
