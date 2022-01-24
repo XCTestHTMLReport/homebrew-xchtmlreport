@@ -15,11 +15,13 @@ jobs:
         env:
           TAG: ${{ github.event.client_payload.tag }}
         run: |
-          brew install coreutils
-          SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
-          shasum -a 256 |\
-          awk '{print $1}'`
-          echo ::set-output name=sha256::${SHA256}
+          curl -f https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz -O
+          #SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
+          #shasum -a 256 |\
+          #awk '{print $1}'`
+          SHASUM=`shasum -a 256 ~/Desktop/2.2.1.tar.gz | awk '{print $1}'`
+          echo $SHASUM
+          echo ::set-output name=sha256::${SHASUM}
 
       - name: Template substitution
         env:
