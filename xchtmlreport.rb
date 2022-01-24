@@ -6,6 +6,8 @@ class Xchtmlreport < Formula
   license "MIT"
   head "https://github.com/XCTestHTMLReport/XCTestHTMLReport.git", :branch => "main"
 
+  depends_on :xcode => "12.5"
+
   def install
     system "swift build --disable-sandbox -c release"
     bin.install ".build/release/xchtmlreport"
