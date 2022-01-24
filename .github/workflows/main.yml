@@ -15,7 +15,8 @@ jobs:
         env:
           TAG: ${{ github.event.client_payload.tag }}
         run: |
-          SHA256=`curl -s https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
+          brew install coreutils
+          SHA256=`curl -sf https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/${TAG}.tar.gz |\
           sha256sum |\
           awk '{print $1}'`
           echo ::set-output name=sha256::${SHA256}
