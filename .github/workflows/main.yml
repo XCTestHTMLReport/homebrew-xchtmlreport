@@ -37,5 +37,5 @@ jobs:
           body: "Bumping version from upstream release\nhttps://github.com/XCTestHTMLReport/XCTestHTMLReport/releases/tag/${{ env.TAG }}"
           commit-message: "${{ env.TAG }} formula version bump"
           branch: "formula-bump/${{ env.TAG }}"
-          add-paths: xchtmlreport.rb
+          add-paths: Formula
           reviewers: tylervick
