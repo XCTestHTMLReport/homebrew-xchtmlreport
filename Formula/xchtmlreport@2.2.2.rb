@@ -1,4 +1,4 @@
-class Xchtmlreport < Formula
+class XchtmlreportAT222 < Formula
   desc "XCTestHTMLReport: Xcode-like HTML report for Unit and UI Tests"
   homepage "https://github.com/XCTestHTMLReport/XCTestHTMLReport"
   url "https://github.com/XCTestHTMLReport/XCTestHTMLReport/archive/refs/tags/2.2.2.tar.gz"
