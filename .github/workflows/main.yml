@@ -26,7 +26,8 @@ jobs:
           SHA256: ${{ steps.sha.outputs.sha256 }}
         run: |
           sed -e "s:{{ TAG }}:$TAG:g" -e "s:{{ SHA256 }}:$SHA256:g" xchtmlreport.rb.tmpl > Formula/xchtmlreport.rb
-          cp Formula/xchtmlreport.rb Formula/xchtmlreport@$TAG.rb
+          # FIXME: Class name must be updated, e.g. `XchtmlreportAT222`
+          #cp Formula/xchtmlreport.rb Formula/xchtmlreport@$TAG.rb
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
